@@ -22,7 +22,10 @@ a.set("name", "Showrin");
 const b = new SettingsManager({});
 b.set("id", "1234");
 
-console.log(a.getSettings(), b.getSettings()); //  a & b will display the same instance dictionary
+// a & b will display the same instance object
+console.log(a.getSettings());
+console.log(b.getSettings());
 
 // Output
-// { name: 'Showrin', id: '1234' } { name: 'Showrin', id: '1234' }
+// { name: 'Showrin', id: '1234' }
+// { name: 'Showrin', id: '1234' }

@@ -21,7 +21,9 @@ b = SettingsManager({})
 b.set("id", "1234")
 
 # a & b will display the same instance dictionary
-print(a.get_settings(), b.get_settings())
+print(a.get_settings())
+print(b.get_settings())
 
 # Output
-# {'name': 'Showrin', 'id': '1234'} {'name': 'Showrin', 'id': '1234'}
+# {'name': 'Showrin', 'id': '1234'}
+# {'name': 'Showrin', 'id': '1234'}

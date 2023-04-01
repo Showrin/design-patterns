@@ -1,6 +1,5 @@
 # Singleton Pattern
 
-
 ## What is it?
 
 Singleton is a design pattern that make sure there is only one instance of a class throughout the app. That means if we have a class A, and we call it twice like ther following:
@@ -9,8 +8,8 @@ Singleton is a design pattern that make sure there is only one instance of a cla
 x = A()
 y = A()
 ```
-Then, x and y will be the same instance.
 
+Then, x and y will be the same instance.
 
 ## Use cases
 
@@ -20,7 +19,6 @@ This pattern is usefull in the situation where having multiple instance can crea
 2. Application Configuration
 3. Caching
 4. Logging
-
 
 ### Databse Connection
 
@@ -38,56 +36,63 @@ To save performance cost, sometimes we need to use caching technique. In brief, 
 
 While logging in the application, it should use single instance throughout the app. Cause, if we use multiple instances, there might be a risk of conflict in writing the log file. Like, multiple logging instance may try to write the same file at a time which can create inconsistency.
 
-
 ## Implementation
 
 ### Singleton pattern in JS
 
 ```
 class SettingsManager {
-  static instance = undefined
+	static instance = undefined;
 
-  constructor(settings) {
-    if (SettingsManager.instance === undefined) {
-      SettingsManager.instance = settings;
-    }
-  }
+	constructor(settings) {
+		if (SettingsManager.instance === undefined) {
+			SettingsManager.instance = settings;
+		}
+	}
 
-  getSettings() {
-    return SettingsManager.instance
-  }
+	getSettings() {
+		return SettingsManager.instance;
+	}
 
-  set(key, value) {
-    SettingsManager.instance[key] = value
-  }
+	set(key, value) {
+		SettingsManager.instance[key] = value;
+	}
 }
 
-const a = new SettingsManager({})
+const a = new SettingsManager({});
 a.set("name", "Showrin");
 
 const b = new SettingsManager({});
 b.set("id", "1234");
 
-console.log(a.getSettings(),b.getSettings(), SettingsManager.instance) //  a & b will display the same instance dictionary
+console.log(a.getSettings(), b.getSettings()); //  a & b will display the same instance dictionary
+
+```
+
+#### Output
+
+```
+{ name: 'Showrin', id: '1234' }
+{ name: 'Showrin', id: '1234' }
 ```
 
 ### Singleton pattern in Python
 
 ```
 class SettingsManager:
-  __instance = None
+    __instance = None
 
-  def __init__(self, settings) -> None:
-    if self.__instance:
-      SettingsManager.__instance = self.__instance
-    else:
-      SettingsManager.__instance = settings
+    def __init__(self, settings) -> None:
+        if self.__instance:
+            SettingsManager.__instance = self.__instance
+        else:
+            SettingsManager.__instance = settings
 
-  def get_settings(self) -> str:
-    return str(self.__instance)
-  
-  def set(self, key: str, value) -> None:
-    self.__instance[key] = value
+    def get_settings(self) -> str:
+        return str(self.__instance)
+
+    def set(self, key: str, value) -> None:
+        self.__instance[key] = value
 
 
 a = SettingsManager({})
@@ -96,5 +101,14 @@ a.set("name", "Showrin")
 b = SettingsManager({})
 b.set("id", "1234")
 
-print(a.get_settings(), b.get_settings())  # a & b will display the same instance dictionary
+# a & b will display the same instance dictionary
+print(a.get_settings(), b.get_settings())
+
+```
+
+#### Output
+
+```
+{'name': 'Showrin', 'id': '1234'}
+{'name': 'Showrin', 'id': '1234'}
 ```
