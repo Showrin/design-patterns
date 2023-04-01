@@ -37,3 +37,64 @@ To save performance cost, sometimes we need to use caching technique. In brief, 
 ### Logging
 
 While logging in the application, it should use single instance throughout the app. Cause, if we use multiple instances, there might be a risk of conflict in writing the log file. Like, multiple logging instance may try to write the same file at a time which can create inconsistency.
+
+
+## Implementation
+
+### Singleton pattern in JS
+
+```
+class SettingsManager {
+  static instance = undefined
+
+  constructor(settings) {
+    if (SettingsManager.instance === undefined) {
+      SettingsManager.instance = settings;
+    }
+  }
+
+  getSettings() {
+    return SettingsManager.instance
+  }
+
+  set(key, value) {
+    SettingsManager.instance[key] = value
+  }
+}
+
+const a = new SettingsManager({})
+a.set("name", "Showrin");
+
+const b = new SettingsManager({});
+b.set("id", "1234");
+
+console.log(a.getSettings(),b.getSettings(), SettingsManager.instance) //  a & b will display the same instance dictionary
+```
+
+### Singleton pattern in Python
+
+```
+class SettingsManager:
+  __instance = None
+
+  def __init__(self, settings) -> None:
+    if self.__instance:
+      SettingsManager.__instance = self.__instance
+    else:
+      SettingsManager.__instance = settings
+
+  def get_settings(self) -> str:
+    return str(self.__instance)
+  
+  def set(self, key: str, value) -> None:
+    self.__instance[key] = value
+
+
+a = SettingsManager({})
+a.set("name", "Showrin")
+
+b = SettingsManager({})
+b.set("id", "1234")
+
+print(a.get_settings(), b.get_settings())  # a & b will display the same instance dictionary
+```
