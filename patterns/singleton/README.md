@@ -2,7 +2,7 @@
 
 ## What is it?
 
-Singleton is a design pattern that make sure there is only one instance of a class throughout the app. That means if we have a class A, and we call it twice like ther following:
+Singleton is a design pattern that make sure there is only one instance of a class throughout the app. That means if we have a class A, and we call it twice like the following:
 
 ```
 x = A()
@@ -13,14 +13,14 @@ Then, x and y will be the same instance.
 
 ## Use cases
 
-This pattern is usefull in the situation where having multiple instance can create problems, unstability and cost issues (Cost can be performance cost, memory cost or management cost). There are some scenerios provided like that:
+This pattern is useful in the situation where having multiple instance can create problems, stability and cost issues (Cost can be performance cost, memory cost or management cost). There are some scenarios provided like that:
 
 1. Database Connection
 2. Application Configuration
 3. Caching
 4. Logging
 
-### Databse Connection
+### Database Connection
 
 Opening, maintaining and closing a database connection is very expensive. That's why in most of the cases it's desirable to have one database connection and reuse it across multiple requests.
 
