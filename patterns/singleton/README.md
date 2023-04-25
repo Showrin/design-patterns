@@ -15,10 +15,17 @@ Then, x and y will be the same instance.
 
 This pattern is useful in the situation where having multiple instance can create problems, stability and cost issues (Cost can be performance cost, memory cost or management cost). There are some scenarios provided like that:
 
-1. Database Connection
-2. Application Configuration
-3. Caching
-4. Logging
+1. Env Files
+2. Database Connection
+3. Application Configuration
+4. Caching
+5. Logging
+
+### Env File
+
+In our applications, we regularly use env files to separate our secret values from the implementation code.
+
+Here, env file acts as a singleton instance. Every files and code blocks access this.
 
 ### Database Connection
 
@@ -42,38 +49,36 @@ While logging in the application, it should use single instance throughout the a
 
 ```
 class SettingsManager {
-	static instance = undefined;
+  static instance = undefined;
 
-	constructor(settings) {
-		if (SettingsManager.instance === undefined) {
-			SettingsManager.instance = settings;
-		}
-	}
+  constructor() {
+    if (SettingsManager.instance === undefined) {
+      SettingsManager.instance = this;
+    }
 
-	getSettings() {
-		return SettingsManager.instance;
-	}
-
-	set(key, value) {
-		SettingsManager.instance[key] = value;
-	}
+    return SettingsManager.instance;
+  }
 }
 
-const a = new SettingsManager({});
-a.set("name", "Showrin");
+const a = new SettingsManager();
+a.color = "red";
 
-const b = new SettingsManager({});
-b.set("id", "1234");
+const b = new SettingsManager();
+b.color = "blue";
 
-console.log(a.getSettings(), b.getSettings()); //  a & b will display the same instance dictionary
+// a & b will display the same instance object
+console.log(a.color);
+console.log(b.color);
+console.log(a === b);
 
 ```
 
 #### Output
 
 ```
-{ name: 'Showrin', id: '1234' }
-{ name: 'Showrin', id: '1234' }
+blue
+blue
+true
 ```
 
 ### Singleton pattern in Python
@@ -82,33 +87,30 @@ console.log(a.getSettings(), b.getSettings()); //  a & b will display the same i
 class SettingsManager:
     __instance = None
 
-    def __init__(self, settings) -> None:
-        if self.__instance:
-            SettingsManager.__instance = self.__instance
-        else:
-            SettingsManager.__instance = settings
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
 
-    def get_settings(self) -> str:
-        return str(self.__instance)
-
-    def set(self, key: str, value) -> None:
-        self.__instance[key] = value
+        return cls.__instance
 
 
-a = SettingsManager({})
-a.set("name", "Showrin")
+a = SettingsManager()
+a.color = "red"
 
-b = SettingsManager({})
-b.set("id", "1234")
+b = SettingsManager()
+b.color = "blue"
 
 # a & b will display the same instance dictionary
-print(a.get_settings(), b.get_settings())
+print(a.color)
+print(b.color)
+print(a is b)
 
 ```
 
 #### Output
 
 ```
-{'name': 'Showrin', 'id': '1234'}
-{'name': 'Showrin', 'id': '1234'}
+blue
+blue
+True
 ```
