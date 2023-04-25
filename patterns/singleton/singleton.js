@@ -1,31 +1,27 @@
 class SettingsManager {
-	static instance = undefined;
+  static instance = undefined;
 
-	constructor(settings) {
-		if (SettingsManager.instance === undefined) {
-			SettingsManager.instance = settings;
-		}
-	}
+  constructor() {
+    if (SettingsManager.instance === undefined) {
+      SettingsManager.instance = this;
+    }
 
-	getSettings() {
-		return SettingsManager.instance;
-	}
-
-	set(key, value) {
-		SettingsManager.instance[key] = value;
-	}
+    return SettingsManager.instance;
+  }
 }
 
-const a = new SettingsManager({});
-a.set("name", "Showrin");
+const a = new SettingsManager();
+a.color = "red";
 
-const b = new SettingsManager({});
-b.set("id", "1234");
+const b = new SettingsManager();
+b.color = "blue";
 
 // a & b will display the same instance object
-console.log(a.getSettings());
-console.log(b.getSettings());
+console.log(a.color);
+console.log(b.color);
+console.log(a === b);
 
 // Output
-// { name: 'Showrin', id: '1234' }
-// { name: 'Showrin', id: '1234' }
+// blue
+// blue
+// true
