@@ -8,54 +8,54 @@ Suppose, you have a mobile that needs a USB C (male) type ports to connect exter
 
 Yes, we can search for an adapter that has USB A (female) and USB C (male) port so that we can connect our pendrive with that adapter and the adapter with our phone. This is the ultimate adapter design pattern.
 
+## Real life use case
+
+### Serializer
+
+Wee often use serializer to convert complex object into json response and vise versa. It's an example of Adapter pattern.
+
 ## Implementation
 
 ### Implementation in Python
 
 ```
-class PendriveAdapter:
-    def convert_usb_a_to_usb_c(self, data):
-        print("Converting USB A (male) to USB C (male) input...")
+class Serializer:
+    data = None
 
-        if data['usb_a']:
-            return {
-                'usb_c': data['usb_a']
-            }
-        
-        raise ValueError("Invalid data provided to the adapter.")
-    
+    def __init__(self, obj=None, data=None) -> None:
+        if obj:
+            self.data = self.convert_to_json(obj)
+        elif data:
+            self.data = self.convert_to_object(data)
 
-class Phone:
-    def read_external_memory_data(self, data: dict):
-        if data['usb_c']:
-            return data['usb_c']
-        
-        raise ValueError("Invalid data provided to the phone.")
-    
+    def convert_to_json(self, obj):
+        print("Converted Python Object to JSON.")
+        return f"{obj} in json format"
 
-class Pendrive:
-    def __init__(self, data) -> None:
-        self.data = data
+    def convert_to_object(self, data):
+        print("Converted JSON to Python Object.")
+        return f"{data} in object format"
 
-    def get_data(self):
-        print("Reading data from the pendrive...")
 
-        return {
-            'usb_a': self.data
-        }
-    
+class ApiView:
+    def list(self, request):
+        data = request["data"]
 
-pendrive = Pendrive("This is pendrive data");
-pendrive_data = pendrive.get_data()
-print(f"Pendrive data => {pendrive_data}\n....")
+        serialized_request_data = Serializer(data=data).data
+        print(serialized_request_data)
 
-adapter = PendriveAdapter()
-converted_data = adapter.convert_usb_a_to_usb_c(pendrive_data)
-print(f"Adapter output data => {converted_data}\n....")
+        print("-------------------------")
+        excepted_result = "Expected result"
 
-phone = Phone()
-phone_data = phone.read_external_memory_data(converted_data)
-print(f"Phone read data => {phone_data}")
+        serialized_response_data = Serializer(excepted_result).data
+        print(serialized_response_data)
+
+        return serialized_response_data
+
+
+list_api_view = ApiView().list(request={
+    "data": "Request body"
+})
 
 ```
 
@@ -63,67 +63,57 @@ print(f"Phone read data => {phone_data}")
 
 ```
 Output:
-Reading data from the pendrive...
-Pendrive data = > {'usb_a': 'This is pendrive data'}
-....
-Converting USB A(male) to USB C(male) input...
-Adapter output data = > {'usb_c': 'This is pendrive data'}
-....
-Phone read data = > This is pendrive data
+Converted JSON to Python Object.
+Request body in object format
+-------------------------
+Converted Python Object to JSON.
+Expected result in json format
 ```
 
 ### Implementation in JS
 
 ```
-class PendriveAdapter {
-	convert_usb_a_to_usb_c(data) {
-		console.log("Converting USB A (male) to USB C (male) input...");
+class Serializer {
+  data = null;
 
-		if (data["usb_a"]) {
-			return {
-				usb_c: data["usb_a"],
-			};
-		}
+  constructor({ obj, data }) {
+    if (obj) {
+      this.data = this.convert_to_json(obj);
+    } else if (data) {
+      this.data = this.convert_to_object(data);
+    }
+  }
 
-		throw Error("Invalid data provided to the adapter.");
-	}
+  convert_to_json(obj) {
+    console.log("Converted JS Object to JSON.");
+    return `${obj} in json format`;
+  }
+
+  convert_to_object(data) {
+    console.log("Converted JSON to JS Object.");
+    return `${data} in object format`;
+  }
 }
 
-class Phone {
-	read_external_memory_data(data) {
-		if (data["usb_c"]) {
-			return data["usb_c"];
-		}
+class ApiView {
+  list(request) {
+    const data = request["data"];
 
-		throw Error("Invalid data provided to the phone.");
-	}
+    const serialized_request_data = new Serializer({ data }).data;
+    console.log(serialized_request_data);
+
+    console.log("-------------------------");
+    const excepted_result = "Expected result";
+
+    const serialized_response_data = new Serializer({ obj: excepted_result })
+      .data;
+    console.log(serialized_response_data);
+
+    return serialized_response_data;
+  }
 }
 
-class Pendrive {
-	constructor(data) {
-		this.data = data;
-	}
-
-	get_data() {
-		console.log("Reading data from the pendrive...");
-
-		return {
-			usb_a: this.data,
-		};
-	}
-}
-
-const pendrive = new Pendrive("This is pendrive data");
-const pendrive_data = pendrive.get_data();
-console.log(`Pendrive data => ${JSON.stringify(pendrive_data)}\n....`);
-
-const adapter = new PendriveAdapter();
-const converted_data = adapter.convert_usb_a_to_usb_c(pendrive_data);
-console.log(`Adapter output data => ${JSON.stringify(converted_data)}\n....`);
-
-const phone = new Phone();
-const phone_data = phone.read_external_memory_data(converted_data);
-console.log(`Phone read data => ${phone_data}`);
+list_api_view = new ApiView().list({ data: "Request body" });
 
 ```
 
@@ -131,11 +121,9 @@ console.log(`Phone read data => ${phone_data}`);
 
 ```
 Output:
-Reading data from the pendrive...
-Pendrive data => {"usb_a":"This is pendrive data"}
-....
-Converting USB A (male) to USB C (male) input...
-Adapter output data => {"usb_c":"This is pendrive data"}
-....
-Phone read data => This is pendrive data
+Converted JSON to JS Object.
+Request body in object format
+-------------------------
+Converted JS Object to JSON.
+Expected result in json format
 ```
