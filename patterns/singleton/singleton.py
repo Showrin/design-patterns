@@ -1,29 +1,25 @@
 class SettingsManager:
     __instance = None
 
-    def __init__(self, settings) -> None:
-        if self.__instance:
-            SettingsManager.__instance = self.__instance
-        else:
-            SettingsManager.__instance = settings
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
 
-    def get_settings(self) -> str:
-        return str(self.__instance)
-
-    def set(self, key: str, value) -> None:
-        self.__instance[key] = value
+        return cls.__instance
 
 
-a = SettingsManager({})
-a.set("name", "Showrin")
+a = SettingsManager()
+a.color = "red"
 
-b = SettingsManager({})
-b.set("id", "1234")
+b = SettingsManager()
+b.color = "blue"
 
 # a & b will display the same instance dictionary
-print(a.get_settings())
-print(b.get_settings())
+print(a.color)
+print(b.color)
+print(a is b)
 
 # Output
-# {'name': 'Showrin', 'id': '1234'}
-# {'name': 'Showrin', 'id': '1234'}
+# blue
+# blue
+# True
