@@ -1,44 +1,44 @@
 class Serializer {
-  data = null;
+	data = null;
 
-  constructor({ obj, data }) {
-    if (obj) {
-      this.data = this.convert_to_json(obj);
-    } else if (data) {
-      this.data = this.convert_to_object(data);
-    }
-  }
+	constructor({ obj, data }) {
+		if (obj) {
+			this.data = this.convert_to_json(obj);
+		} else if (data) {
+			this.data = this.convert_to_object(data);
+		}
+	}
 
-  convert_to_json(obj) {
-    console.log("Converted JS Object to JSON.");
-    return `${obj} in json format`;
-  }
+	convert_to_json(obj) {
+		console.log("Converted JS Object to JSON.");
+		return `${obj} in json format`;
+	}
 
-  convert_to_object(data) {
-    console.log("Converted JSON to JS Object.");
-    return `${data} in object format`;
-  }
+	convert_to_object(data) {
+		console.log("Converted JSON to JS Object.");
+		return `${data} in object format`;
+	}
 }
 
 class ApiView {
-  list(request) {
-    const data = request["data"];
+	list(request) {
+		const data = request["data"];
 
-    const serialized_request_data = new Serializer({ data }).data;
-    console.log(serialized_request_data);
+		const serialized_request_data = new Serializer({ data }).data;
+		console.log(serialized_request_data);
 
-    console.log("-------------------------");
-    const excepted_result = "Expected result";
+		console.log("-------------------------");
+		const excepted_result = "Expected result";
 
-    const serialized_response_data = new Serializer({ obj: excepted_result })
-      .data;
-    console.log(serialized_response_data);
+		const serialized_response_data = new Serializer({ obj: excepted_result })
+			.data;
+		console.log(serialized_response_data);
 
-    return serialized_response_data;
-  }
+		return serialized_response_data;
+	}
 }
 
-list_api_view = new ApiView().list({ data: "Request body" });
+const list_api_view = new ApiView().list({ data: "Request body" });
 
 // Output
 // Converted JSON to JS Object.
