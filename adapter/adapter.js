@@ -3,18 +3,18 @@ class Serializer {
 
 	constructor({ obj, data }) {
 		if (obj) {
-			this.data = this.convert_to_json(obj);
+			this.data = this.convertToJson(obj);
 		} else if (data) {
-			this.data = this.convert_to_object(data);
+			this.data = this.convertToObject(data);
 		}
 	}
 
-	convert_to_json(obj) {
+	convertToJson(obj) {
 		console.log("Converted JS Object to JSON.");
 		return `${obj} in json format`;
 	}
 
-	convert_to_object(data) {
+	convertToObject(data) {
 		console.log("Converted JSON to JS Object.");
 		return `${data} in object format`;
 	}
@@ -24,21 +24,21 @@ class ApiView {
 	list(request) {
 		const data = request["data"];
 
-		const serialized_request_data = new Serializer({ data }).data;
-		console.log(serialized_request_data);
+		const serializedRequestData = new Serializer({ data }).data;
+		console.log(serializedRequestData);
 
 		console.log("-------------------------");
-		const excepted_result = "Expected result";
+		const exceptedResult = "Expected result";
 
-		const serialized_response_data = new Serializer({ obj: excepted_result })
+		const serializedResponseData = new Serializer({ obj: exceptedResult })
 			.data;
-		console.log(serialized_response_data);
+		console.log(serializedResponseData);
 
-		return serialized_response_data;
+		return serializedResponseData;
 	}
 }
 
-const list_api_view = new ApiView().list({ data: "Request body" });
+const listApiView = new ApiView().list({ data: "Request body" });
 
 // Output
 // Converted JSON to JS Object.
